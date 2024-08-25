@@ -1,4 +1,3 @@
-// Función para saludar al usuario
 function saludarUsuario(nombre, apellido, edad) {
     let mensajeEdad = edad >= 18 ? "Muchas gracias por visitarnos " : "Eres menor de edad ";
     let saludo = `Hola, ${nombre} ${apellido} !! ${mensajeEdad}.`;
