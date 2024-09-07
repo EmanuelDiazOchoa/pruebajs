@@ -35,7 +35,7 @@
 const tienda = {
     productos: [
         { nombre: 'manzana', precio: 50, stock: 10 },
-        { nombre: 'plátano', precio: 20, stock: 15 },
+        { nombre: 'banana', precio: 20, stock: 15 },
         { nombre: 'naranja', precio: 40, stock: 20 },
         { nombre: 'frutillas', precio: 20, stock: 8 }
     ]
