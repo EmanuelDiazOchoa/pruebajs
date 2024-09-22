@@ -29,82 +29,154 @@
 //     saludarUsuario(nombre, apellido, edad); 
 // }
 
-//? segunda preentrega
+// //? segunda preentrega
 
 
-const tienda = {
-    productos: [
-        { nombre: 'manzana', precio: 50, stock: 10 },
-        { nombre: 'banana', precio: 20, stock: 15 },
-        { nombre: 'naranja', precio: 40, stock: 20 },
-        { nombre: 'frutillas', precio: 20, stock: 8 }
-    ]
-};
+// const tienda = {
+//     productos: [
+//         { nombre: 'manzana', precio: 50, stock: 10 },
+//         { nombre: 'banana', precio: 20, stock: 15 },
+//         { nombre: 'naranja', precio: 40, stock: 20 },
+//         { nombre: 'frutillas', precio: 20, stock: 8 }
+//     ]
+// };
 
-const mostrarProductos = () => {
-    return tienda.productos.map(prod => `${prod.nombre} - $${prod.precio} (Stock: ${prod.stock})`).join('\n');
-};
+// const mostrarProductos = () => {
+//     return tienda.productos.map(prod => `${prod.nombre} - $${prod.precio} (Stock: ${prod.stock})`).join('\n');
+// };
 
-const calcularTotal = (carrito) => {
-    return carrito.reduce((total, item) => {
-        return total + (item.precio * item.cantidad);
-    }, 0).toFixed(2);
-};
+// const calcularTotal = (carrito) => {
+//     return carrito.reduce((total, item) => {
+//         return total + (item.precio * item.cantidad);
+//     }, 0).toFixed(2);
+// };
 
-const carritoDeCompras = () => {
-    let carrito = [];
+// const carritoDeCompras = () => {
+//     let carrito = [];
 
-    while (true) {
-        const seleccion = prompt(`Tienda de Frutas:\n${mostrarProductos()}\n\nEscribe el nombre de la fruta que deseas comprar (o escribe 'salir' para finalizar):`);
+//     while (true) {
+//         const seleccion = prompt(`Tienda de Frutas:\n${mostrarProductos()}\n\nEscribe el nombre de la fruta que deseas comprar (o escribe 'salir' para finalizar):`);
 
-        if (seleccion.toLowerCase() === 'salir') {
-            console.log('El usuario decidió salir.');
-            break;
-        }
+//         if (seleccion.toLowerCase() === 'salir') {
+//             console.log('El usuario decidió salir.');
+//             break;
+//         }
 
-        const producto = tienda.productos.find(prod => prod.nombre === seleccion.toLowerCase());
+//         const producto = tienda.productos.find(prod => prod.nombre === seleccion.toLowerCase());
 
-        if (!producto) {
-            alert('Fruta no encontrada. Inténtalo de nuevo.');
-            console.log('Selección inválida:', seleccion); 
-            continue;
-        }
+//         if (!producto) {
+//             alert('Fruta no encontrada. Inténtalo de nuevo.');
+//             console.log('Selección inválida:', seleccion); 
+//             continue;
+//         }
 
-        const cantidad = parseInt(prompt(`¿Cuántas ${producto.nombre}s deseas comprar?`));
+//         const cantidad = parseInt(prompt(`¿Cuántas ${producto.nombre}s deseas comprar?`));
 
-        if (isNaN(cantidad) || cantidad <= 0) {
-            alert('Cantidad no válida.');
-            console.log('Cantidad no válida ingresada:', cantidad); 
-            continue;
-        }
+//         if (isNaN(cantidad) || cantidad <= 0) {
+//             alert('Cantidad no válida.');
+//             console.log('Cantidad no válida ingresada:', cantidad); 
+//             continue;
+//         }
 
-        if (cantidad > producto.stock) {
-            alert(`No tenemos suficiente stock. Solo quedan ${producto.stock} disponibles.`);
-            console.log(`Stock insuficiente para ${producto.nombre}. Solicitado: ${cantidad}, Disponible: ${producto.stock}`); 
-            continue;
-        }
+//         if (cantidad > producto.stock) {
+//             alert(`No tenemos suficiente stock. Solo quedan ${producto.stock} disponibles.`);
+//             console.log(`Stock insuficiente para ${producto.nombre}. Solicitado: ${cantidad}, Disponible: ${producto.stock}`); 
+//             continue;
+//         }
 
-        carrito.push({
-            nombre: producto.nombre,
-            precio: producto.precio,
-            cantidad: cantidad
+//         carrito.push({
+//             nombre: producto.nombre,
+//             precio: producto.precio,
+//             cantidad: cantidad
+//         });
+
+//         producto.stock -= cantidad; 
+//         alert(`Has añadido ${cantidad} ${producto.nombre}(s) a tu carrito.`);
+//         console.log(`Producto añadido: ${producto.nombre}, Cantidad: ${cantidad}, Stock restante: ${producto.stock}`); 
+//     }
+
+//     if (carrito.length > 0) {
+//         const detalleCompra = carrito.map(item => `${item.cantidad} ${item.nombre}(s) - $${(item.precio * item.cantidad).toFixed(2)}`).join('\n');
+//         const total = calcularTotal(carrito);
+//         alert(`Detalle de tu compra:\n${detalleCompra}\n\nTotal a pagar: $${total}`);
+//         console.log('Detalle de la compra:', carrito); 
+//         console.log('Total a pagar:', total); 
+//     } else {
+//         alert('No has realizado ninguna compra.');
+//         console.log('El usuario no realizó ninguna compra.'); 
+//     }
+// };
+
+// carritoDeCompras();
+
+//! tercera entrega
+
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.add-to-cart');
+
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const productId = event.target.getAttribute('data-product');
+            const productPrice = event.target.getAttribute('data-price');
+            addToCart(productId, productPrice);
         });
+    });
 
-        producto.stock -= cantidad; 
-        alert(`Has añadido ${cantidad} ${producto.nombre}(s) a tu carrito.`);
-        console.log(`Producto añadido: ${producto.nombre}, Cantidad: ${cantidad}, Stock restante: ${producto.stock}`); 
+    
+    document.getElementById('cart-link').addEventListener('click', () => {
+        displayCart();
+    });
+
+    
+    function addToCart(productId, productPrice) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const product = {
+            id: productId,
+            name: `Producto ${productId}`,
+            price: productPrice
+        };
+
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`Producto ${productId} añadido al carrito`);
     }
 
-    if (carrito.length > 0) {
-        const detalleCompra = carrito.map(item => `${item.cantidad} ${item.nombre}(s) - $${(item.precio * item.cantidad).toFixed(2)}`).join('\n');
-        const total = calcularTotal(carrito);
-        alert(`Detalle de tu compra:\n${detalleCompra}\n\nTotal a pagar: $${total}`);
-        console.log('Detalle de la compra:', carrito); 
-        console.log('Total a pagar:', total); 
-    } else {
-        alert('No has realizado ninguna compra.');
-        console.log('El usuario no realizó ninguna compra.'); 
-    }
-};
+    
+    function displayCart() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContainer = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        let total = 0;
 
-carritoDeCompras();
+        cartContainer.innerHTML = '';
+        if (cart.length === 0) {
+            cartContainer.innerHTML = '<p>El carrito está vacío.</p>';
+            totalPriceElement.textContent = 'Total: $0.00';
+        } else {
+            cart.forEach(item => {
+                const productElement = document.createElement('div');
+                productElement.textContent = `${item.name} - $${item.price}`;
+                cartContainer.appendChild(productElement);
+                total += parseFloat(item.price);
+            });
+            totalPriceElement.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        document.getElementById('cart').style.display = 'block'; 
+    }
+
+    
+    window.clearCart = function() {
+        localStorage.removeItem('cart');
+        document.getElementById('cart-items').innerHTML = '<p>El carrito está vacío.</p>';
+        document.getElementById('total-price').textContent = 'Total: $0.00';
+    };
+
+    
+    document.getElementById('checkout-button').addEventListener('click', () => {
+        alert('¡Gracias por tu compra!');
+        clearCart(); 
+    });
+});
+
