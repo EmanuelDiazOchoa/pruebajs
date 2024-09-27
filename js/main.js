@@ -1,3 +1,4 @@
+// //? primera preentrega
 // function saludarUsuario(nombre, apellido, edad) {
 //     let mensajeEdad = edad >= 18 ? "Muchas gracias por visitarnos " : "Eres menor de edad ";
 //     let saludo = `Hola, ${nombre} ${apellido} !! ${mensajeEdad}.`;
@@ -109,74 +110,179 @@
 
 // carritoDeCompras();
 
-//! tercera entrega
+// //! tercera entrega
 
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.add-to-cart');
-
-    
-    buttons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const productId = event.target.getAttribute('data-product');
-            const productPrice = event.target.getAttribute('data-price');
-            addToCart(productId, productPrice);
-        });
-    });
+// document.addEventListener('DOMContentLoaded', () => {
+//     const buttons = document.querySelectorAll('.add-to-cart');
 
     
-    document.getElementById('cart-link').addEventListener('click', () => {
-        displayCart();
-    });
+//     buttons.forEach(button => {
+//         button.addEventListener('click', (event) => {
+//             const productId = event.target.getAttribute('data-product');
+//             const productPrice = event.target.getAttribute('data-price');
+//             addToCart(productId, productPrice);
+//         });
+//     });
 
     
-    function addToCart(productId, productPrice) {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const product = {
-            id: productId,
-            name: `Producto ${productId}`,
-            price: productPrice
-        };
+//     document.getElementById('cart-link').addEventListener('click', () => {
+//         displayCart();
+//     });
 
-        cart.push(product);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        alert(`Producto ${productId} añadido al carrito`);
+    
+//     function addToCart(productId, productPrice) {
+//         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+//         const product = {
+//             id: productId,
+//             name: `Producto ${productId}`,
+//             price: productPrice
+//         };
+
+//         cart.push(product);
+//         localStorage.setItem('cart', JSON.stringify(cart));
+//         alert(`Producto ${productId} añadido al carrito`);
+//     }
+
+    
+//     function displayCart() {
+//         const cart = JSON.parse(localStorage.getItem('cart')) || [];
+//         const cartContainer = document.getElementById('cart-items');
+//         const totalPriceElement = document.getElementById('total-price');
+//         let total = 0;
+
+//         cartContainer.innerHTML = '';
+//         if (cart.length === 0) {
+//             cartContainer.innerHTML = '<p>El carrito está vacío.</p>';
+//             totalPriceElement.textContent = 'Total: $0.00';
+//         } else {
+//             cart.forEach(item => {
+//                 const productElement = document.createElement('div');
+//                 productElement.textContent = `${item.name} - $${item.price}`;
+//                 cartContainer.appendChild(productElement);
+//                 total += parseFloat(item.price);
+//             });
+//             totalPriceElement.textContent = `Total: $${total.toFixed(2)}`;
+//         }
+
+//         document.getElementById('cart').style.display = 'block'; 
+//     }
+
+    
+//     window.clearCart = function() {
+//         localStorage.removeItem('cart');
+//         document.getElementById('cart-items').innerHTML = '<p>El carrito está vacío.</p>';
+//         document.getElementById('total-price').textContent = 'Total: $0.00';
+//     };
+
+    
+//     document.getElementById('checkout-button').addEventListener('click', () => {
+//         alert('¡Gracias por tu compra!');
+//         clearCart(); 
+//     });
+// });
+
+//? entrega final 
+
+// Variables globales
+let cart = [];
+let cartElement = document.getElementById('cart');
+let cartItemsElement = document.getElementById('cart-items');
+let totalPriceElement = document.getElementById('total-price');
+
+// Función para agregar un producto al carrito
+function addToCart(productId, productName, price) {
+    // Verificar si el producto ya está en el carrito
+    let existingProduct = cart.find(item => item.productId === productId);
+
+    if (existingProduct) {
+        // Si ya existe, incrementar la cantidad
+        existingProduct.quantity += 1;
+    } else {
+        // Si no existe, agregar nuevo producto
+        cart.push({ productId, productName, price, quantity: 1 });
     }
 
+    // Guardar en localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Mostrar el carrito
+    updateCart();
+}
+
+// Función para actualizar el contenido del carrito
+function updateCart() {
+    // Limpiar los elementos del carrito
+    cartItemsElement.innerHTML = '';
     
-    function displayCart() {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartContainer = document.getElementById('cart-items');
-        const totalPriceElement = document.getElementById('total-price');
-        let total = 0;
+    let totalPrice = 0;
 
-        cartContainer.innerHTML = '';
-        if (cart.length === 0) {
-            cartContainer.innerHTML = '<p>El carrito está vacío.</p>';
-            totalPriceElement.textContent = 'Total: $0.00';
-        } else {
-            cart.forEach(item => {
-                const productElement = document.createElement('div');
-                productElement.textContent = `${item.name} - $${item.price}`;
-                cartContainer.appendChild(productElement);
-                total += parseFloat(item.price);
-            });
-            totalPriceElement.textContent = `Total: $${total.toFixed(2)}`;
-        }
+    // Recorrer los productos en el carrito
+    cart.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.textContent = `${item.productName} - Cantidad: ${item.quantity} - Precio: $${(item.price * item.quantity).toFixed(2)}`;
+        cartItemsElement.appendChild(itemElement);
 
-        document.getElementById('cart').style.display = 'block'; 
+        // Calcular el precio total
+        totalPrice += item.price * item.quantity;
+    });
+
+    totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
+
+    // Mostrar el carrito si tiene productos
+    if (cart.length > 0) {
+        cartElement.style.display = 'block';
+        cartElement.classList.add('active');
+    } else {
+        cartElement.style.display = 'none';
+        cartElement.classList.remove('active');
     }
+}
 
-    
-    window.clearCart = function() {
-        localStorage.removeItem('cart');
-        document.getElementById('cart-items').innerHTML = '<p>El carrito está vacío.</p>';
-        document.getElementById('total-price').textContent = 'Total: $0.00';
-    };
+// Función para vaciar el carrito
+function clearCart() {
+    cart = [];
+    localStorage.removeItem('cart');
+    updateCart();
+}
 
-    
-    document.getElementById('checkout-button').addEventListener('click', () => {
-        alert('¡Gracias por tu compra!');
-        clearCart(); 
+// Cargar el carrito desde localStorage al cargar la página
+window.addEventListener('load', () => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCart();
+    }
+});
+
+// Agregar eventos a los botones de "Añadir al carrito"
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', event => {
+        const productId = event.target.getAttribute('data-product');
+        const price = parseFloat(event.target.getAttribute('data-price'));
+        const productName = event.target.previousElementSibling.previousElementSibling.textContent;
+        addToCart(productId, productName, price);
     });
 });
 
+// Botón de finalizar compra (Simulación básica)
+document.getElementById('checkout-button').addEventListener('click', () => {
+    alert('¡Gracias por tu compra!');
+    clearCart();  // Vaciar carrito tras la compra
+});
+
+
+// fetch('https://api.tienda.com/checkout', {
+//     method: 'POST',
+//     body: JSON.stringify(cart),
+//     headers: {
+//         'Content-Type': 'application/json'
+//     }
+// })
+// .then(response => response.json())
+// .then(data => {
+//     alert('Compra realizada con éxito');
+//     clearCart();  // Limpiar carrito
+// })
+// .catch(error => {
+//     console.error('Error en la compra:', error);
+// });

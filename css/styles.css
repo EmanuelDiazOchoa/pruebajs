@@ -6,9 +6,7 @@
     box-sizing: border-box;
 }
 
-
 body {
-    height: 100%;
     font-family: 'Bebas Neue', sans-serif;
     line-height: 1.6;
     color: #333;
@@ -61,7 +59,8 @@ main {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
-    width: calc(33.333% - 20px);
+    width: calc(33.333% - 30px);
+    /* Ajuste para asegurar márgenes */
     box-sizing: border-box;
     transition: box-shadow 0.3s ease;
 }
@@ -99,6 +98,31 @@ main {
     background-color: #555;
 }
 
+/* Estilos del carrito */
+#cart {
+    position: fixed;
+    right: 20px;
+    top: 80px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    transform: translateX(100%);
+    visibility: hidden; /* Ocultar por defecto */
+}
+
+#cart.active {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible; /* Mostrar cuando esté activo */
+}
+
+
+
 footer {
     background-color: #333;
     color: #fff;
@@ -106,17 +130,4 @@ footer {
     text-align: center;
     width: 100%;
     margin-top: auto;
-}
-
-#cart {
-    position: fixed;
-    right: 20px;
-    top: 80px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    
 }
