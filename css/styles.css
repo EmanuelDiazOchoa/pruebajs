@@ -98,7 +98,7 @@ main {
     background-color: #555;
 }
 
-/* Estilos del carrito */
+
 #cart {
     position: fixed;
     right: 20px;
@@ -112,13 +112,13 @@ main {
     transition: transform 0.3s ease, opacity 0.3s ease;
     opacity: 0;
     transform: translateX(100%);
-    visibility: hidden; /* Ocultar por defecto */
+    visibility: hidden; 
 }
 
 #cart.active {
     opacity: 1;
     transform: translateX(0);
-    visibility: visible; /* Mostrar cuando esté activo */
+    visibility: visible; 
 }
 
 
