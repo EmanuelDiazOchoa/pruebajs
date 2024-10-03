@@ -112,7 +112,7 @@ main {
     opacity: 0;
     transform: translateX(100%);
     visibility: hidden; 
-    max-width: 300px; /* Ajusta el ancho del carrito */
+    max-width: 300px; 
 }
 
 #cart.active {
@@ -140,7 +140,7 @@ main {
 }
 
 #cart .item img {
-    width: 50px; /* Tamaño fijo para las imágenes */
+    width: 50px; 
     height: 50px;
     border-radius: 5px;
 }
@@ -160,7 +160,7 @@ main {
 
 #cart .checkout,
 #cart button {
-    background-color: #4CAF50; /* Botón de compra */
+    background-color: #4CAF50; 
     color: #fff;
     border: none;
     padding: 10px;
@@ -168,12 +168,12 @@ main {
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
-    margin-top: 10px; /* Espaciado entre botones */
+    margin-top: 10px; 
 }
 
 #cart .checkout:hover,
 #cart button:hover {
-    background-color: #388E3C; /* Color más oscuro al pasar el mouse */
+    background-color: #388E3C; 
 }
 
 
