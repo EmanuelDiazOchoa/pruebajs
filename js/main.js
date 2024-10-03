@@ -4,7 +4,7 @@
 //     let saludo = `Hola, ${nombre} ${apellido} !! ${mensajeEdad}.`;
 //     console.log(saludo); 
 
-    
+
 //     if (edad < 18) {
 //         despedirUsuario(nombre, apellido, edad); 
 //     }
@@ -115,7 +115,7 @@
 // document.addEventListener('DOMContentLoaded', () => {
 //     const buttons = document.querySelectorAll('.add-to-cart');
 
-    
+
 //     buttons.forEach(button => {
 //         button.addEventListener('click', (event) => {
 //             const productId = event.target.getAttribute('data-product');
@@ -124,12 +124,12 @@
 //         });
 //     });
 
-    
+
 //     document.getElementById('cart-link').addEventListener('click', () => {
 //         displayCart();
 //     });
 
-    
+
 //     function addToCart(productId, productPrice) {
 //         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 //         const product = {
@@ -143,7 +143,7 @@
 //         alert(`Producto ${productId} añadido al carrito`);
 //     }
 
-    
+
 //     function displayCart() {
 //         const cart = JSON.parse(localStorage.getItem('cart')) || [];
 //         const cartContainer = document.getElementById('cart-items');
@@ -167,14 +167,14 @@
 //         document.getElementById('cart').style.display = 'block'; 
 //     }
 
-    
+
 //     window.clearCart = function() {
 //         localStorage.removeItem('cart');
 //         document.getElementById('cart-items').innerHTML = '<p>El carrito está vacío.</p>';
 //         document.getElementById('total-price').textContent = 'Total: $0.00';
 //     };
 
-    
+
 //     document.getElementById('checkout-button').addEventListener('click', () => {
 //         alert('¡Gracias por tu compra!');
 //         clearCart(); 
@@ -191,44 +191,44 @@ let totalPriceElement = document.getElementById('total-price');
 
 
 function addToCart(productId, productName, price) {
-    
+
     let existingProduct = cart.find(item => item.productId === productId);
 
     if (existingProduct) {
-        
+
         existingProduct.quantity += 1;
     } else {
-        
+
         cart.push({ productId, productName, price, quantity: 1 });
     }
 
-    
+
     localStorage.setItem('cart', JSON.stringify(cart));
 
-    
+
     updateCart();
 }
 
 
 function updateCart() {
-    
+
     cartItemsElement.innerHTML = '';
-    
+
     let totalPrice = 0;
 
-    
+
     cart.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.textContent = `${item.productName} - Cantidad: ${item.quantity} - Precio: $${(item.price * item.quantity).toFixed(2)}`;
         cartItemsElement.appendChild(itemElement);
 
-        
+
         totalPrice += item.price * item.quantity;
     });
 
     totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
 
-    
+
     if (cart.length > 0) {
         cartElement.style.display = 'block';
         cartElement.classList.add('active');
@@ -267,22 +267,22 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
 
 document.getElementById('checkout-button').addEventListener('click', () => {
     alert('¡Gracias por tu compra!');
-    clearCart();  
+    clearCart();
 });
 
 
- fetch('https://api.tienda.com/checkout', {
-     method: 'POST',
-     body: JSON.stringify(cart),
-     headers: {
-         'Content-Type': 'application/json'
-     }
- })
- .then(response => response.json())
- .then(data => {
-     alert('Compra realizada con éxito');
-     clearCart();  
- })
- .catch(error => {
-     console.error('Error en la compra:', error);
- });
+fetch('https://api.tienda.com/checkout', {
+    method: 'POST',
+    body: JSON.stringify(cart),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+        alert('Compra realizada con éxito');
+        clearCart();
+    })
+    .catch(error => {
+        console.error('Error en la compra:', error);
+    });
